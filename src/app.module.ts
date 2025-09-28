@@ -45,13 +45,13 @@ export class RabbitMQCommunicationModule implements OnModuleInit {
 
   private async registerMessageHandlers() {
     const handlers =
-      await this.discoveryService.providersWithMetaAtKey<RabbitMQHandlerOptions>(
+      await this.discoveryService.providerMethodsWithMetaAtKey<RabbitMQHandlerOptions>(
         RABBITMQ_HANDLERS,
       );
 
     for (const handler of handlers) {
       const { meta, discoveredMethod } = handler;
-      const instance = discoveredMethod.instance;
+      const instance = discoveredMethod.parentClass.instance;
 
       this.messageHandlerService.registerHandler(
         meta.routingKey,
